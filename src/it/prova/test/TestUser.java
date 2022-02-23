@@ -43,10 +43,9 @@ public class TestUser {
 		System.out.println(".......testInserimentoNuovoUser inizio.............");
 		User newUserInstance = new User("mauro", "rossi", "avavv", "bobobo", new Date());
 		if (userService.inserisciNuovo(newUserInstance) != 1)
-			throw new RuntimeException("testInserimentoNuovoUser fallito ");
+			throw new RuntimeException("testInserimentoNuovoUser FAILED ");
 
-		System.out.println("inserito nuovo record: " + newUserInstance);
-		System.out.println(".......testInserimentoNuovoUser fine.............");
+		System.out.println(".......testInserimentoNuovoUser PASSED.............");
 	}
 
 	private static void testRimozioneUser(UserService userService) throws Exception {
@@ -59,12 +58,10 @@ public class TestUser {
 		Long idDelPrimo = interoContenutoTabella.get(0).getId();
 		// ricarico per sicurezza con l'id individuato
 		User toBeRemoved = userService.findById(idDelPrimo);
-		System.out.println("User candidato alla rimozione: " + toBeRemoved);
 		if (userService.rimuovi(toBeRemoved) != 1)
-			throw new RuntimeException("testRimozioneUser fallito ");
+			throw new RuntimeException("testRimozioneUser FAILED ");
 
-		System.out.println("rimosso record: " + toBeRemoved);
-		System.out.println(".......testRimozioneUser fine.............");
+		System.out.println(".......testRimozioneUser PASSED.............");
 	}
 
 	private static void testFindByExample(UserService userService) throws Exception {
@@ -76,7 +73,7 @@ public class TestUser {
 		// preparo un example che ha come nome 'as' e ricerco
 		List<User> risultatifindByExample = userService.findByExample(new User("as"));
 		if (risultatifindByExample.size() != 2)
-			throw new RuntimeException("testFindByExample fallito ");
+			throw new RuntimeException("testFindByExample FAILED ");
 
 		// se sono qui il test è ok quindi ripulisco i dati che ho inserito altrimenti
 		// la prossima volta non sarebbero 2 ma 4, ecc.
@@ -84,7 +81,7 @@ public class TestUser {
 			userService.rimuovi(userItem);
 		}
 
-		System.out.println(".......testFindByExample fine.............");
+		System.out.println(".......testFindByExample PASSED.............");
 	}
 
 	private static void testUpdateUser(UserService userService) throws Exception {
@@ -92,23 +89,23 @@ public class TestUser {
 
 		// inserisco i dati che poi modifico
 		if (userService.inserisciNuovo(new User("Giovanna", "Sastre", "gio", "pwd@3", new Date())) != 1)
-			throw new RuntimeException("testUpdateUser: inserimento preliminare fallito ");
+			throw new RuntimeException("testUpdateUser: inserimento preliminare FAILED ");
 
 		// recupero col findbyexample e mi aspetto di trovarla
 		List<User> risultatifindByExample = userService.findByExample(new User("Giovanna", "Sastre"));
 		if (risultatifindByExample.size() != 1)
-			throw new RuntimeException("testUpdateUser: testFindByExample fallito ");
+			throw new RuntimeException("testUpdateUser: testFindByExample FAILED ");
 
+		//mi metto da parte l'id su cui lavorare per il test
 		Long idGiovanna = risultatifindByExample.get(0).getId();
+		
 		// ricarico per sicurezza con l'id individuato e gli modifico un campo
 		String nuovoCognome = "Perastra";
 		User toBeUpdated = userService.findById(idGiovanna);
 		toBeUpdated.setCognome(nuovoCognome);
-		System.out.println("User candidato alla modifica: " + toBeUpdated);
 		if (userService.aggiorna(toBeUpdated) != 1)
-			throw new RuntimeException("testUpdateUser fallito ");
+			throw new RuntimeException("testUpdateUser FAILED ");
 
-		System.out.println("aggiornato record: " + toBeUpdated);
 		System.out.println(".......testUpdateUser inizio.............");
 	}
 
